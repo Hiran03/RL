@@ -1,5 +1,6 @@
 import numpy as np
 import config
+import pandas as pd
 
 ACTIONS = ["N", "S", "E", "W", "H"]
 
@@ -102,3 +103,44 @@ idx_to_state = {i: s for s, i in state_to_idx.items()}
 
 n_states = len(states)
 n_actions = len(ACTIONS)
+
+def visualize_subset(state, action):
+
+    trans = get_transitions(state, action)
+
+    cells = [(i, j) for i in range(2, 5) for j in range(2, 5)]
+
+    # Proper independent matrix
+    matrix = np.empty((3, 3), dtype=object)
+
+    # Initialize with (0 prob, 0 reward)
+    for i in range(3):
+        for j in range(3):
+            matrix[i, j] = (0.0, 0.0)
+
+    # Accumulate probabilities and expected rewards
+    for (nx, ny, _), prob, r in trans:
+        if (nx, ny) in cells:
+
+            i = nx - 2
+            j = ny - 2
+            matrix[i, j] = (prob,r)
+
+    df = pd.DataFrame(
+        matrix,
+        index=[2, 3, 4],
+        columns=[2, 3, 4]
+    )
+
+    print(f"\nTransition-Reward tuples for action {action} from (3,3):")
+    print(df)
+
+    return df
+
+if __name__ == "__main__":
+    
+    for a in ACTIONS : 
+        print("Action:", a)
+        visualize_subset((3, 3, 0), a)
+        print("------------------------------------------------------")
+        print()
