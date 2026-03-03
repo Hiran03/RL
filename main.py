@@ -98,11 +98,7 @@ for x in range(config.GRID_SIZE):
         for w in [0, 1]:
             states.append((x, y, w))
 
-state_to_idx = {s: i for i, s in enumerate(states)}
-idx_to_state = {i: s for s, i in state_to_idx.items()}
 
-n_states = len(states)
-n_actions = len(ACTIONS)
 
 def visualize_subset(state, action):
 
